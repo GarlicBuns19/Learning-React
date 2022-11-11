@@ -1,16 +1,19 @@
 import { useEffect, useState } from "react";
-import '../Home.css'
-import Blogs from './Blogs';
+import "../Home.css";
+import Blogs from "./Blogs";
 
 function Home() {
   const [newName, setName] = useState(``);
   const [test, setTest] = useState("");
-  const [arr,setArr] = useState([
-    {title : 'Lolo',id: 1},
-    {title : 'Yes',id: 2},
-    {title : 'Yo',id: 3}
-  ])
-  const title = 'Lets get that title'
+  const [arr, setArr] = useState(null);
+  const [pending, setPending] = useState(true);
+  const [error, setError] = useState();
+  // [
+  //   {title : 'Lolo',id: 1},
+  //   {title : 'Yes',id: 2},
+  //   {title : 'Yo',id: 3}
+  // ]
+  const title = "Lets get that title";
 
   const name = () => {
     let desk = document.getElementById("inputName").value;
@@ -25,9 +28,9 @@ function Home() {
   };
 
   const time = () => {
-    let tester = document.getElementById('test')
+    let tester = document.getElementById("test");
     setInterval(() => {
-        tester.innerHTML = Math.random() * 1000
+      tester.innerHTML = Math.random() * 1000;
     }, 1000);
   };
 
@@ -40,25 +43,67 @@ function Home() {
     // name = ''
   };
 
-  const handleDelete = (id) => {
-    let newArr = arr.filter(e => e.id !== id)
-    setArr(newArr)
-  }
+  // const handleDelete = (id) => {
+  //   let newArr = arr.filter(e => e.id !== id)
+  //   setArr(newArr)
+  // }
 
-  useEffect(() => {
-    console.log('useEffect ran damn')
-  })
+  const [joke, setJoke] = useState("Cake");
+
+  const laugh = () => {
+    setJoke("I am gone");
+  };
+
+  useEffect(
+    () => {
+      console.log("useEffect ran damn");
+      fetch("http://localhost:6969/results")
+        .then((res) => {
+          if (!res.ok) {
+            throw Error("data could not be fetched");
+          }
+          return res.json();
+        })
+        .then((data) => {
+          console.log(data);
+          setError(null);
+          setArr(data);
+          setPending(false);
+        })
+        .catch((err) => {
+          setPending(false);
+          setError(err.message);
+          console.log(err.message);
+        });
+      console.log(arr);
+      // console.log(joke)
+    },
+    /*Run this hook once*/ [joke]
+  );
 
   return (
     <div>
       <input type="text" placeholder="Enter your Name" id="inputName" />
+      {/* How to run a function */}
       <button onClick={() => handleClick(name)}>Click Me</button>
       <p id="para">{newName}</p>
       <p id="test">{test}</p>
-
       <div>
-        <Blogs blogs={arr} title={title} handleDelete={handleDelete} />
+        {/* Props */}
+        {error && <div>{error}</div>}
+        {pending && <div>Loading.........</div>}
+        {arr && (
+          <Blogs blogs={arr} title={title} /*handleDelete={handleDelete}*/ />
+        )}
       </div>
+      <button
+        onClick={() => {
+          laugh();
+        }}
+      >
+        Joke
+      </button>
+      <p>{joke}</p>
     </div>
   );
 }

@@ -10,9 +10,9 @@ function Blogs({blogs,title,handleDelete}) {
             <div className="arr" key={e.id}>
                 <h1>{e.title}</h1>
                 <h1>{e.id}</h1>
-                <button onClick={() => {
+                {/* <button onClick={() => {
                     handleDelete(e.id)
-                }}>Delete</button>
+                }}>Delete</button> */}
             </div>
         ))}
         </div>
