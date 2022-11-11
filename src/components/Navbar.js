@@ -1,3 +1,5 @@
+import {Link} from 'react-router-dom' 
+
 function Navbar(){
     const dateInNumbers = new Date()
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -6,6 +8,8 @@ function Navbar(){
         <div>
             <h1>Navbar is here</h1>
             <h2>Date today {date}</h2>
+            <h3><Link to="/">Home</Link></h3>
+            <h3><Link to="/create">Create Blog</Link></h3>
         </div>
     )
 }

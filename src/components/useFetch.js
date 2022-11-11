@@ -8,7 +8,10 @@ const useFetch = (url) => {
   useEffect(
     () => {
       console.log("useEffect ran damn");
-      fetch(url)
+
+      const abortCont = new AbortController();
+
+      fetch(url, { signal: abortCont.signal })
         .then((res) => {
           if (!res.ok) {
             throw Error("data could not be fetched");
@@ -22,16 +25,24 @@ const useFetch = (url) => {
           setPending(false);
         })
         .catch((err) => {
-          setPending(false);
-          setError(err.message);
-          console.log(err.message);
+            if(err.name === 'AbortErro'){
+                console.log(err)
+            }else{
+                setPending(false);
+                setError(err.message);
+                console.log(err.message);
+            }
         });
       console.log(arr);
       // console.log(joke)
+      return () => {
+        abortCont.abort()
+        console.log("cleanup");
+      };
     },
     /*Run this hook once*/ [url]
-    );
-    return { arr, pending, error };
+  );
+  return { arr, pending, error };
 };
 
 export default useFetch;
