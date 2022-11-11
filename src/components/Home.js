@@ -1,13 +1,17 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "../Home.css";
 import Blogs from "./Blogs";
+import useFetch from "./useFetch";
 
 function Home() {
   const [newName, setName] = useState(``);
   const [test, setTest] = useState("");
-  const [arr, setArr] = useState(null);
-  const [pending, setPending] = useState(true);
-  const [error, setError] = useState();
+
+  const { arr, pending, error } = useFetch("http://localhost:6969/results");
+
+  // const [arr, setArr] = useState(null);
+  // const [pending, setPending] = useState(true);
+  // const [error, setError] = useState();
   // [
   //   {title : 'Lolo',id: 1},
   //   {title : 'Yes',id: 2},
@@ -48,38 +52,11 @@ function Home() {
   //   setArr(newArr)
   // }
 
-  const [joke, setJoke] = useState("Cake");
+  // const [joke, setJoke] = useState("Cake");
 
-  const laugh = () => {
-    setJoke("I am gone");
-  };
-
-  useEffect(
-    () => {
-      console.log("useEffect ran damn");
-      fetch("http://localhost:6969/results")
-        .then((res) => {
-          if (!res.ok) {
-            throw Error("data could not be fetched");
-          }
-          return res.json();
-        })
-        .then((data) => {
-          console.log(data);
-          setError(null);
-          setArr(data);
-          setPending(false);
-        })
-        .catch((err) => {
-          setPending(false);
-          setError(err.message);
-          console.log(err.message);
-        });
-      console.log(arr);
-      // console.log(joke)
-    },
-    /*Run this hook once*/ [joke]
-  );
+  // const laugh = () => {
+  //   setJoke("I am gone");
+  // };
 
   return (
     <div>
@@ -96,14 +73,14 @@ function Home() {
           <Blogs blogs={arr} title={title} /*handleDelete={handleDelete}*/ />
         )}
       </div>
-      <button
+      {/* <button
         onClick={() => {
           laugh();
         }}
       >
         Joke
       </button>
-      <p>{joke}</p>
+      <p>{joke}</p> */}
     </div>
   );
 }
