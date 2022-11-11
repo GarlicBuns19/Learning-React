@@ -1,7 +1,9 @@
 // import logo from './logo.svg';
-import './App.css';
-import Navbar from './components/Navbar';
-import Home from './components/Home';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import "./App.css";
+import Navbar from "./components/Navbar";
+import Home from "./components/Home";
+import Create from "./components/Create";
 
 function App() {
   return (
@@ -20,8 +22,17 @@ function App() {
           Learn React
         </a>
       </header> */}
-      <Navbar/>
-      <Home/>
+      <Router>
+        <Navbar />
+        <Switch>
+          <Route exact path={'/'}>
+            <Home />
+          </Route>
+          <Route exact path={'/create'}>
+            <Create />
+          </Route>
+        </Switch>
+      </Router>
     </div>
   );
 }
