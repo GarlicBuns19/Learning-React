@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+// custom hook useName
 const useFetch = (url) => {
   const [arr, setArr] = useState(null);
   const [pending, setPending] = useState(true);
